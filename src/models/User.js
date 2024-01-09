@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Error = require('../error/errors')
-const otpGenerator = require('otp-generator');
 
 const userSchema = mongoose.Schema({
     firstName : {
