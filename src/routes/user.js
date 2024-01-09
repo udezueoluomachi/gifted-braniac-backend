@@ -8,7 +8,6 @@ const upload = multer()
 
 router.post("/register", controller.register)
 router.post("/login", controller.login)
-router.post('/logout', auth, controller.logout)
 
 
 // Get user's data
