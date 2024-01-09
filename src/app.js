@@ -14,6 +14,7 @@ const errorHandler = require("./error/errorHandler");
 const userRoutes = require("./routes/user");
 const paymentRoutes = require("./routes/payment");
 const webhookRoutes = require("./routes/webhook");
+const adminRoutes = require("./routes/admin");
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(function (req, res, next) {
 app.use("/api/v1/user", userRoutes)
 app.use("/api/v1/payment", paymentRoutes)
 app.use("/api/v1/webhook", webhookRoutes)
+app.use("/api/v1/admin", adminRoutes)
 
 app.use(errorHandler)
 
