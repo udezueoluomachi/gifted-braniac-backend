@@ -27,6 +27,31 @@ module.exports.hasAuth = async function (req, res, next) {
     }
 }
 
+module.exports.adminHasAuth = async function (req, res, next) {
+    try {
+        if (!req.headers.authorization)
+            return next(Error.badRequest("No Authorization Header"))
+
+        const token = req.headers.authorization.split(" ")[1]
+
+        if (!req.headers.authorization.startsWith("Bearer"))
+            return next(Error.badRequest("Invalid Authorization Header"))
+
+        const admin = await validateAdminAccessToken(token)
+
+        if (admin instanceof Error)
+            return next(admin)
+
+        req.admin = admin
+        req.accessToken = token
+        return next()
+
+
+    } catch (err) {
+        next({ err })
+    }
+}
+
 module.exports.validatePaystackWebhook = async (req, res, next) => {
     try {
         const reqIp = req.headers['x-forwarded-for'] || req.ip || req.socket.remoteAddress;

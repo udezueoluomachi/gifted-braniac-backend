@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const controllers = require('../controllers/admin')
 const {
-    adminHasAuth: auth, isAdminGrantedAccess
+    adminHasAuth: auth,
 } = require('../middleware/validators')
 
 router.post(

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
+const Admin = require("./../models/Admin");
 const seeders = require('./../config/seeders')
 const Error = require('../error/errors');
 
@@ -22,6 +23,16 @@ module.exports.generateAccessToken = async function (payload) {
     return accessToken
 }
 
+module.exports.generateAdminAccessToken = async function (payload) {
+    const accessToken = jwt.sign({ _id: payload._id, deviceHash: payload.fingerprint.hash }, seeders.ACCESS_TOKEN_SECRET, { expiresIn: seeders.JWT_EXPIREIN_DATE })
+    const admin = await Admin.findById(payload._id)
+    if (!admin) return Error.badRequest('theres no admin with this id', payload._id)
+    admin.accessToken = accessToken;
+    await admin.save()
+
+    return accessToken
+}
+
 module.exports.validateAccessToken = async function (accessToken) {
     const user = await User.findOne({ "accessTokens.accessToken": accessToken })
 
@@ -39,6 +50,25 @@ module.exports.validateAccessToken = async function (accessToken) {
         return "TokenExpiredError" ? Error.sessionExpired(error.message) : Error.unauthorizedRequest(error.message)
     }
     return user
+}
+
+module.exports.validateAdminAccessToken = async function (accessToken) {
+    const admin = await Admin.findOne({ accessToken : accessToken })
+
+    if (!admin) return Error.unauthorizedRequest('Invalid access token!')
+
+    try {
+        const extractedPayload = jwt.verify(accessToken, seeders.ACCESS_TOKEN_SECRET)
+        if (String(extractedPayload._id) !== String(admin._id))
+            return Error.unauthorizedRequest('invalid access token!')
+    } catch (error) {
+        // deleting the accessToken from users database
+        await deleteAccessToken(accessToken)
+
+        error.message = error.name === 'TokenExpiredError' ? "Session Expired! access token deleted" : error.message
+        return "TokenExpiredError" ? Error.sessionExpired(error.message) : Error.unauthorizedRequest(error.message)
+    }
+    return admin
 }
 
 const deleteAccessToken = async function (accessToken) {
