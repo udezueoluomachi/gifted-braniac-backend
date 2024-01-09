@@ -1,7 +1,7 @@
 const paystack = require("paystack-api")(process.env.PAYSTACK_SECRET);
 
 const PaystackTransaction = require("../models/PaystackTransaction");
-const UserTransactionHistory = require("../models/UserTransactionHistory.js")
+const UserTransactionHistory = require("../models/UserTransactionHistory")
 const User = require("../models/User");
 
 const paystackEvents = paystack.Events;
