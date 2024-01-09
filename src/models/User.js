@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require('bcryptjs');
 const Error = require('../error/errors')
 const otpGenerator = require('otp-generator');
 
