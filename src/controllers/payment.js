@@ -2,7 +2,7 @@ const Schema = require("json-validace");
 const {OK, CREATED, NOT_FOUND} = require("http-status-codes")
 const Error = require("../error/errors");
 const PaystackTransaction = require("../models/PaystackTransaction");
-const UserTransactionHistory = require("../models/UserTrasactionHistory")
+const UserTransactionHistory = require("../models/UserTransactionHistory")
 const Paystack = require("paystack-api")(process.env.PAYSTACK_SECRET)
 
 
