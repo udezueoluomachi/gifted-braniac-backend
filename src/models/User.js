@@ -25,7 +25,12 @@ const userSchema = mongoose.Schema({
 			require: true,
 			type: String
 		}
-	}]
+	}],
+    session : {
+        required : true,
+        type : String,
+        enum : ["Hybrid session", "Morning session", "Afternoon session"]
+    }
 }, {
 	timestamps: true,
 	toJSON: {

@@ -14,6 +14,7 @@ module.exports.register = async (req, res, next) => {
 			lastName: { type: "string", required: true },
 			email: { type: "email", required: true },
 			phone: { type: "string", required: true , minLength: 11, maxLength : 11},
+			session : {type : "string", required : true, enum : ["Hybrid session", "Morning session", "Afternoon session"]}
 		})
 
 		// body validation
